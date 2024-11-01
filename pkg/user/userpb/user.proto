@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "./";
+
+service UserService{
+    rpc CreateUser(Create) returns(Response);
+    rpc GetUserByID(ID) returns(Profile);
+    rpc UpdateUser(Profile) returns(Profile);
+    rpc DeleteUserBYID(ID) returns(Response);
+    rpc GetAllUsers(NoParams) returns(Names);
+}
+
+message Names{
+repeated Profile Users = 1;
+}
+
+message NoParams{}
+
+message ID {
+    uint32 ID = 1;
+}
+
+message Profile {
+    uint32 User_ID = 1;
+    string User_Name = 2;
+    string Email = 3; 
+    string Phone = 4;
+    string Created = 5;
+    string Updated = 6;
+    string message = 7;
+}
+
+message Create {
+    string User_Name = 1;
+    string Email = 2;
+    string Phone = 3;
+}
+
+message Response {
+    enum Status {
+        OK = 0;
+        ERROR = 1;
+    }
+
+    Status status = 1;
+    string message = 2;
+    oneof payload {
+        string error = 3;
+        string data = 4;
+    }
+}
